@@ -1,0 +1,4 @@
+beautifulsoup4
+time
+requests
+openpyxl
