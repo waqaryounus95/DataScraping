@@ -1,0 +1,17 @@
+# Ignore virtual environments
+venv/
+
+# Ignore Python bytecode files
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignore IDE config files (for example, VSCode)
+.vscode/
+
+# Ignore environment variables file
+.env
+
+# Ignore other common folders and files
+.DS_Store
+*.log
