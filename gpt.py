@@ -154,7 +154,7 @@ excel_path   = 'Data_Capture.xlsx'
 sheet_name   = 'Data'
 movie_col    = 'B'
 start_row    = 101
-num_movies   = 105  # change if you have more rows
+num_movies   = 15800  # change if you have more rows
 
 # OUTPUT COLUMNS:
 col_genre                = 'F'
