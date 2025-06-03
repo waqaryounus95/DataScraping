@@ -1,6 +1,6 @@
 # Ignore virtual environments
 venv/
-
+extra/
 # Ignore Python bytecode files
 __pycache__/
 *.pyc
