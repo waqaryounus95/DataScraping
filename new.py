@@ -5,7 +5,13 @@ from bs4 import BeautifulSoup
 from urllib.parse import quote_plus, urlparse
 from openpyxl import load_workbook
 from difflib import SequenceMatcher
+import sys
 
+
+
+log_file = open("new_log.txt", "a")
+sys.stdout = log_file
+sys.stderr = log_file 
 # ------------------------------------------------------------
 # CONFIGURATION
 # ------------------------------------------------------------
@@ -13,7 +19,7 @@ excel_path   = 'Data_Capture_new.xlsx'
 sheet_name   = 'Data'
 movie_col    = 'B'
 year_col     = 'E'
-start_row    = 210
+start_row    = 4410
 num_movies   = 4200  # adjust as needed
 
 # OUTPUT COLUMNS:
@@ -31,9 +37,11 @@ pair_cols = [
     ('Y','Z'), ('AA','AB')
 ]
 
+
 HEADERS      = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
 MAX_RETRIES  = 3
 RETRY_DELAY  = 5  # seconds
+
 
 # ------------------------------------------------------------
 # HELPERS
@@ -52,7 +60,7 @@ def get_soup_and_html(url):
             r.raise_for_status()
             return BeautifulSoup(r.text, 'html.parser'), r.text
         except requests.exceptions.RequestException as e:
-            # print(f"  ! Error fetching {url}: {e} (retry {attempt+1}/{MAX_RETRIES})")
+            print(f"  ! Error fetching {url}: {e} (retry {attempt+1}/{MAX_RETRIES})")
             time.sleep(RETRY_DELAY)
     # print(f"Failed to fetch {url} after {MAX_RETRIES} retries.")
     return None, None
@@ -119,12 +127,12 @@ def extract_cast(soup):
 def extract_international_data(slug):
     url = f"https://www.the-numbers.com/current/cont/graphs/movie/international-iframe/{slug}"
     try:
-        r = requests.get(url, headers=HEADERS, timeout=15)
-        # print(f"GET {url} → {r.status_code}")
+        r = requests.get(url, headers=HEADERS, timeout=10)
+        print(f"GET {url} → {r.status_code}")
         if r.status_code != 200:
             return []
     except Exception as e:
-        # print(f"  ! Error fetching international data: {e}")
+        print(f"  ! Error fetching international data: {e}")
         return []
 
     js = r.text
@@ -346,3 +354,4 @@ for i in range(num_movies):
             print(f"  !! Could not save after row {row}: {save_err}")
 
 print("\nAll done – columns F–AB updated, original columns A–E preserved.")
+log_file.close()
